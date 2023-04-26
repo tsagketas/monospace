@@ -21,7 +21,6 @@ class CreateVesselOpexesTable extends Migration
             $table->timestamps();
 
             $table->foreign('vessel_opex_vessel_id')->references('vessel_id')->on('vessels');
-            $table->unique(['vessel_opex_vessel_id', 'vessel_opex_date']);
         });
     }
 
