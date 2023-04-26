@@ -28,18 +28,44 @@ class C_Voyage extends Controller
                 'voyage_vessel_id' => 'required|integer',
                 'voyage_start' => 'required|date',
                 'voyage_end' =>  'nullable|date|after_or_equal:voyage_start',
-                'voyage_revenues' => 'float',
-                'voyage_expenses' => 'float',
+                'voyage_revenues' => 'nullable|numeric',
+                'voyage_expenses' => 'nullable|numeric',
             ],
             [
                 'voyage_vessel_id' => 'voyage_vessel_id',
                 'voyage_start' => 'voyage_start',
+                'voyage_end' =>  'voyage_end',
+                'voyage_revenues' => 'voyage_revenues',
+                'voyage_expenses' => 'voyage_expenses',
             ]
         );
 
-        $this->voyage->create($params);
+        return $this->voyage->create($params);    }
 
-        return $this->send_response($this->create_response(true,'Sums calculated',null));
+    public function update($id,Request $request)
+    {
+        $params = $request->all();
+
+        $validatedData = $this->validate_params($params,
+            [
+                'voyage_vessel_id' => 'nullable|integer',
+                'voyage_start' => 'nullable|date',
+                'voyage_end' =>  'nullable|date|after_or_equal:voyage_start',
+                'voyage_revenues' => 'nullable|numeric',
+                'voyage_expenses' => 'nullable|numeric',
+                'voyage_status' => 'nullable|string',
+            ],
+            [
+                'voyage_vessel_id' => 'voyage_vessel_id',
+                'voyage_start' => 'voyage_start',
+                'voyage_end' => 'voyage_end',
+                'voyage_revenues' => 'voyage_revenues',
+                'voyage_expenses' => 'voyage_expenses',
+                'voyage_status' => 'voyage_status',
+            ]
+        );
+
+        return $this->voyage->update($id,$params);
     }
 
 }

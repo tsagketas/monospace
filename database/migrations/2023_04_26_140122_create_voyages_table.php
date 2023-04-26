@@ -25,7 +25,7 @@ class CreateVoyagesTable extends Migration
             $table->decimal('voyage_profit', 8, 2)->nullable();
             $table->timestamps();
 
-            $table->foreign('voyage_id')->references('vessel_id')->on('vessels');
+            $table->foreign('voyage_vessel_id')->references('vessel_id')->on('vessels');
         });
     }
 
