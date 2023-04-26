@@ -26,7 +26,7 @@ class R_VesselOpex
 
     public function create($id,array $data)
     {
-        dd('here');
+
         //σε περιπτωση που υπαρχει starting date
         if( empty($data['vessel_opex_date']))
             throw new InvalidArgumentException("Empty Date provided!");
@@ -48,15 +48,12 @@ class R_VesselOpex
         //date format για βαση
         $data['vessel_opex_date']=Carbon::parse($data['vessel_opex_date'])->format('Y-m-d H:i:s');
 
-        $vessel_opexes=$vessel->opexes();
-        dd($vessel_opexes);
-        if($vessel_opexes){
-            foreach($vessel_opexes as $opex){
-                if(Carbon::parse($opex->vessel_opex_date)->equalTo(Carbon::parse($data['vessel_opex_date']))){
-                    throw new InvalidArgumentException("The Vessel Has Already Opex for the given Date!");
-                }
-            }
+        $vessel_opexes=$vessel->opexes()->get();
 
+        foreach($vessel_opexes as $opex){
+            if(Carbon::parse($opex->vessel_opex_date)->equalTo(Carbon::parse($data['vessel_opex_date']))){
+                throw new InvalidArgumentException("The Vessel Has Already Opex for the given Date!");
+            }
         }
 
         $rec = $this->model->newInstance($data);

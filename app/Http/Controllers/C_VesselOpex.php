@@ -21,7 +21,6 @@ class C_VesselOpex extends Controller
 
     public function create($id,Request $request)
     {
-        dd('here');
         $params = $request->all();
 
         $validatedData = $this->validate_params($params,
