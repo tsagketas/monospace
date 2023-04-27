@@ -56,10 +56,40 @@ class R_Vessel
                 voyages.voyage_revenues AS voyage_revenues,
                 voyages.voyage_expenses AS voyage_expenses,
                 voyages.voyage_profit AS voyage_profit,
-                voyages.voyage_profit / EXTRACT(EPOCH FROM (voyages.voyage_end - voyages.voyage_start))::INTEGER AS voyage_profit_daily_average,
-                SUM(vessel_opexes.vessel_opex_expenses) AS vessel_expenses_total,
-                (voyages.voyage_profit - SUM(vessel_opexes.vessel_opex_expenses)) AS net_profit,
-                (voyages.voyage_profit - SUM(vessel_opexes.vessel_opex_expenses)) / EXTRACT(EPOCH FROM (voyages.voyage_end - voyages.voyage_start))::INTEGER AS net_profit_daily_average
+                voyages.voyage_profit / EXTRACT(DAY FROM AGE(voyages.voyage_end, voyages.voyage_start)) AS voyage_profit_daily_average,
+                (
+                    SELECT SUM(vessel_opexes.vessel_opex_expenses)
+                    FROM
+                        vessel_opexes
+                    WHERE
+                        vessel_opexes.vessel_opex_date>=voyages.voyage_start
+                    AND vessel_opexes.vessel_opex_date<=voyages.voyage_end
+                    AND vessel_opexes.vessel_opex_vessel_id=voyages.voyage_vessel_id
+                ) AS vessel_expenses_total,
+                (
+                    voyages.voyage_profit -
+                    (
+                        SELECT SUM(vessel_opexes.vessel_opex_expenses)
+                        FROM
+                            vessel_opexes
+                        WHERE
+                            vessel_opexes.vessel_opex_date>=voyages.voyage_start
+                        AND vessel_opexes.vessel_opex_date<=voyages.voyage_end
+                        AND vessel_opexes.vessel_opex_vessel_id=voyages.voyage_vessel_id
+                    )
+                ) AS net_profit,
+                (
+                    voyages.voyage_profit -
+                    (
+                        SELECT SUM(vessel_opexes.vessel_opex_expenses)
+                        FROM
+                            vessel_opexes
+                        WHERE
+                            vessel_opexes.vessel_opex_date>=voyages.voyage_start
+                        AND vessel_opexes.vessel_opex_date<=voyages.voyage_end
+                        AND vessel_opexes.vessel_opex_vessel_id=voyages.voyage_vessel_id
+                    )
+                ) / EXTRACT(DAY FROM AGE(voyages.voyage_end, voyages.voyage_start)) AS net_profit_daily_average
             FROM
                 voyages
             LEFT JOIN

@@ -25,12 +25,10 @@ class C_VesselOpex extends Controller
 
         $validatedData = $this->validate_params($params,
             [
-                'vessel_opex_vessel_id' => 'required|integer',
                 'vessel_opex_date' => 'required|date',
                 'vessel_opex_expenses' =>  'required|numeric',
             ],
             [
-                'vessel_opex_vessel_id' => 'vessel_opex_vessel_id',
                 'vessel_opex_date' => 'vessel_opex_date',
                 'vessel_opex_expenses' =>  'vessel_opex_expenses',
             ]

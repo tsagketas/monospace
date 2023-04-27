@@ -55,7 +55,7 @@ class R_VesselOpex
                 throw new InvalidArgumentException("The Vessel Has Already Opex for the given Date!");
             }
         }
-
+        $data['vessel_opex_vessel_id']=$id;
         $rec = $this->model->newInstance($data);
 
         if($rec->save())
