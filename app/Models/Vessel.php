@@ -32,4 +32,10 @@ class Vessel extends Model
     {
         return $this->hasOne(Voyage::class, 'voyage_vessel_id')->where('voyage_status', 'ongoing');
     }
+
+
+    public function voyages()
+    {
+        return $this->hasMany(Voyage::class, 'voyage_vessel_id','vessel_id');
+    }
 }

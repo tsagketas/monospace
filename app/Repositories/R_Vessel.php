@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Vessel;
 
+use App\Models\Voyage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use InvalidArgumentException;
@@ -21,6 +22,28 @@ class R_Vessel
     public function __construct(Vessel $model)//
     {
         $this->model = $model;
+    }
+
+    public function create(array $data)
+    {
+        $rec = $this->model->newInstance($data);
+
+        if($rec->save())
+            return 'Record Created! ID: '.$rec->vessel_id;
+
+        return 'Could not Insert Record';
+    }
+
+    public function update($id,array $data)
+    {
+        $rec=Vessel::find($id);
+        if (empty($rec))
+            throw new ModelNotFoundException("The Vessel provided does not exist! ID:" . $id);
+
+        if($rec->update($data))
+            return 'Record Updated! ID: '.$rec->vessel_id;
+
+        return 'Could not Update Record';
     }
 
     public function get_vessel_report($id)

@@ -118,7 +118,7 @@ class R_Voyage
             }
         }
 
-        //υπολογισμος code σε περιπτωση που αλλαξε το vessel
+        //υπολογισμος code σε περιπτωση που αλλαξε το vessel ή το voyage_start
         $voyage_code=$vessel->vessel_name.'-'.$voyage_start;
 
         if($rec->update([

@@ -19,6 +19,32 @@ class C_Vessel extends Controller
         $this->vessel = $vessel;
     }
 
+    public function create(Request $request)
+    {
+        $params = $request->all();
+
+        $validatedData = $this->validate_params($params,
+            [
+                'vessel_name' => 'required|string',
+                'vessel_imo_number' => 'required|string',
+            ],
+            [
+                'vessel_name' => 'vessel_name',
+                'vessel_imo_number' => 'vessel_imo_number',
+            ]
+        );
+
+        return $this->vessel->create($params);
+    }
+
+    public function update($id,Request $request)
+    {
+
+        $params = $request->all();
+
+        return $this->vessel->update($id,$params);
+    }
+
     public function get_vessel_report($id)
     {
         return $this->vessel->get_vessel_report($id);

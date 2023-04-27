@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Vessel;
+use App\Models\Voyage;
 use Illuminate\Support\ServiceProvider;
+use App\Observers\VesselObserver;
+use App\Observers\VoyageObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Vessel::observe(VesselObserver::class);
+        Voyage::observe(VoyageObserver::class);
     }
 }

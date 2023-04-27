@@ -15,6 +15,9 @@ use App\Http\Controllers\C_Vessel;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('/vessels', [C_Vessel::class, 'create']);
+Route::put('/vessels/{id}', [C_Vessel::class, 'update']);
+
 
 Route::get('/vessels/{id}/financial-report', [C_Vessel::class, 'get_vessel_report']);
 
