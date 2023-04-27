@@ -48,6 +48,10 @@ class R_Vessel
 
     public function get_vessel_report($id)
     {
+        $rec=Vessel::find($id);
+        if (empty($rec))
+            throw new ModelNotFoundException("The Vessel provided does not exist! ID:" . $id);
+
        $ret= DB::SELECT(DB::RAW("
             SELECT
                 voyages.voyage_id AS voyage_id,
