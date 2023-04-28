@@ -10,7 +10,6 @@ class Vessel extends Model
     use HasFactory;
     protected $fillable = [
         'vessel_id',
-        //'order_product_id',
         'vessel_name',
         'vessel_imo_number',
     ];
